@@ -17,6 +17,8 @@ from sklearn.ensemble import GradientBoostingRegressor
 
 gbr = GradientBoostingRegressor()
 
+# Assume GradientBoostingRegressor will be trained on data
+
 rules = {"House Type": [
             ("=", "Penthouse", 1.0),
             ("=", "Shack", 0.0)
@@ -27,6 +29,10 @@ rules = {"House Type": [
          ]}
          
 ra_estimator = RuleAugmentedEstimator(gbr, rules)
+
+# Now, the RuleAugmentedEstimator can be used similarily to the underlying base estimator, assuming data X is defined
+
+predictions = ra_estimator.predict(X)
 ```
 In the above example, whenever in th `House Type` pandas column the value "Penthouse" appears, the value `1.0` is returned by the estimator.
 Similarily, if any value in the `House Price` pandas column is greater or equal to `500000.0`, the value `0.0` will be returned.
