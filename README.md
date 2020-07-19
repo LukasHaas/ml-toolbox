@@ -34,5 +34,5 @@ ra_estimator = RuleAugmentedEstimator(gbr, rules)
 
 predictions = ra_estimator.predict(X)
 ```
-In the above example, whenever in th `House Type` pandas column the value "Penthouse" appears, the value `1.0` is returned by the estimator.
+In the above example, whenever in the `House Type` pandas column the value "Penthouse" appears, the value `1.0` is returned by the estimator.
 Similarily, if any value in the `House Price` pandas column is greater or equal to `500000.0`, the value `0.0` will be returned.
