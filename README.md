@@ -12,6 +12,9 @@ The provided rules are hard-coded and take precedence over the underlying estima
 **Example Usage:**
 
 ```python
+import pandas as pd
+from sklearn.ensemble import GradientBoostingRegressor
+
 gbr = GradientBoostingRegressor()
 
 rules = {"House Type": [
