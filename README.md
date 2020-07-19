@@ -17,7 +17,7 @@ from sklearn.ensemble import GradientBoostingRegressor
 
 gbr = GradientBoostingRegressor()
 
-# Assume GradientBoostingRegressor will be trained on data
+# Assume GradientBoostingRegressor was trained on data
 
 rules = {"House Type": [
             ("=", "Penthouse", 1.0),
