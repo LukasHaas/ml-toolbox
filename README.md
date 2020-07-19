@@ -2,7 +2,7 @@
 
 This is a repository containing python utilities for machine learning and deep learning. 
 
-## Rule-Based Machine Learning: *RuleAugmentedEstimator Class*
+## 1. Rule-Based Machine Learning: *RuleAugmentedEstimator Class*
 
 **Combine domain knowledge facts with machine learning.**
 
