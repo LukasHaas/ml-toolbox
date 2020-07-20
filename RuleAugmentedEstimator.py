@@ -12,8 +12,9 @@ class RuleAugmentedEstimator(BaseEstimator):
     estimator's predictions.
 
     Attributes:
-        likes_spam: A boolean indicating if we like SPAM or not.
-        eggs: An integer count of the eggs we have laid.
+        base_estimator: The underlying estimator.
+          Can be accessed as an attribute after which its methods can be used.
+        rules: A dictionary of rules. See ``__init__``.
     """
 
     def __init__(self, base_estimator, rules, **base_params):
