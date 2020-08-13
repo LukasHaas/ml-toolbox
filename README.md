@@ -36,3 +36,31 @@ predictions = ra_estimator.predict(X)
 ```
 In the above example, whenever in the `House Type` pandas column the value "Penthouse" appears, the value `1.0` is returned by the estimator.
 Similarily, if any value in the `House Price` pandas column is greater or equal to `500000.0`, the value `0.0` will be returned.
+
+## 2. Regression at Confidence Intervals (Quantile Regression): *QuantileRegressor Class*
+
+**Evaluate regression predictions at varying levels of confidence.**
+
+This class is a wrapper class for sklearn regressor with the additional possibility of adding multiple quantiles.
+These can be specificed to evaluate the prediction problem's result at varying confidence levels, all at the same time.
+    
+**Example Usage:**
+
+```python
+import pandas as pd
+from sklearn.ensemble import GradientBoostingRegressor
+
+gbr = GradientBoostingRegressor()
+q_gbr = QuantileRegressor(gbr, fit_quantiles=[0.4, 0.5, 0.55]) # The class also allows setting an interval and step size
+
+# Now the quantile regressor can be trained at multiple confidence levels at the same time, assuming data X is defined
+q_gbr.fit(X)
+
+# The QuantileRegressor class can be used to predict regression outcomes at varying levels of confidence
+predictions = q_qbr.predict(X)
+
+>>> {'0.4' : array([0.09000266, 0.1899997 , 0.2099997 ]),
+     '0.5' : array([0.10000266, 0.1999997 , 0.2199997 ]),
+     '0.55': array([0.11000266, 0.2099997 , 0.2299997 ])}
+```
+
