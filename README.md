@@ -57,10 +57,19 @@ q_gbr = QuantileRegressor(gbr, fit_quantiles=[0.4, 0.5, 0.55]) # The class also 
 q_gbr.fit(X)
 
 # The QuantileRegressor class can be used to predict regression outcomes at varying levels of confidence
-predictions = q_qbr.predict(X)
+predictions = q_gbr.predict(X)
 
+predictions
 >>> {'0.4' : array([0.09000266, 0.1899997 , 0.2099997 ]),
      '0.5' : array([0.10000266, 0.1999997 , 0.2199997 ]),
      '0.55': array([0.11000266, 0.2099997 , 0.2299997 ])}
+     
+# The QuantileRegressor class can also be used to predict confidence intervals (first fit it on the required quantiles).
+confidence_intervals = q_gbr.predict_confidence_interval(data, confidence=0.2)  # Predicts the 20% confidence interval
+
+confidence_intervals
+>>> [(0.10000265613988876, 0.2),
+     (0.19999970487334573, 0.2),
+     (0.21999970487334575, 0.29999734386011123)]
 ```
 
