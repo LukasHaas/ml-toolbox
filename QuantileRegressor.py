@@ -148,7 +148,7 @@ class QuantileRegressor(BaseEstimator):
         for quantile, model in self.model_dict.items():
             model.fit(X, y)
 
-    def predict(self, X: Union[pd.DataFrame, pd.Series, np.array, list], quantiles: list = [0.5], **kwargs) -> Union[Dict, np.array]:
+    def predict(self, X: Union[pd.DataFrame, pd.Series, np.array, list], quantiles: list = [0.5]) -> Union[Dict, np.array]:
         """Gets predictions for the provided input data and quantiles.
         
         The predicitons are evaluated for every quantile and input data 
@@ -185,6 +185,43 @@ class QuantileRegressor(BaseEstimator):
         
         else:
             return model_predictions
+
+    def predict_confidence_interval(self, X: Union[pd.DataFrame, pd.Series, np.array, list], confidence: float) -> list:
+        """Predicts confidence intervals for the provided input data and quantiles.
+        
+        The model must first be trained on the quantiles resulting from
+        the confidence level, meaning 0.5 +- (confidence / 2).
+        
+        Args:
+            X: The feature data to evaluate predictions for.
+            confidence: The confidence for which the interval
+              should be calculated (0.0 - 1.0)
+        
+        Returns:
+            list: The evaluated confidence intervals.
+              The return type is a list of tuples which each show the confidence
+              interval range.
+        """
+
+        assert confidence >= 0 and confidence <= 1, \
+            "The confidence must be between 0.0 and 1.0"
+
+        first_quantile = 0.5 - (confidence / 2)
+        second_quantile = 0.5 + (confidence / 2)
+
+        quantile_set = set([first_quantile, second_quantile])
+        model_quantiles = set(self._quantiles)
+
+        assert quantile_set.issubset(model_quantiles), \
+            'The model hasn\'t been trained yet on the needed quantiles for the {} % confidence interval.\n\
+             Please fit the model first on all of the following quantiles: {}.'.format(int(confidence * 100), quantile_set)
+
+        predictions = self.predict(X, quantiles=[first_quantile, second_quantile])
+        pred_keys = list(predictions.keys())
+        data_length = len(predictions[pred_keys[0]])
+
+        confidence_intervals = [(predictions[pred_keys[0]][x], predictions[pred_keys[1]][x]) for x in range(data_length)]
+        return confidence_intervals
     
     def score(self, X: Union[pd.DataFrame, pd.Series, np.array, list], y: Union[pd.Series, np.array, list], quantile=0.5) -> float:
         """Evaluates the r2 score for the predictions.
