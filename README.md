@@ -54,7 +54,7 @@ gbr = GradientBoostingRegressor()
 q_gbr = QuantileRegressor(gbr, fit_quantiles=[0.4, 0.5, 0.55]) # The class also allows setting an interval and step size
 
 # Now the quantile regressor can be trained at multiple confidence levels at the same time, assuming data X is defined
-q_gbr.fit(X)
+q_gbr.fit(X, y)
 
 # The QuantileRegressor class can be used to predict regression outcomes at varying levels of confidence
 predictions = q_gbr.predict(X)
