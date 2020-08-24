@@ -15,7 +15,7 @@ class QuantileRegressor(BaseEstimator):
     estimator's predictions.
     """
 
-    def __init__(self, base_regressor: BaseEstimator, fit_quantiles: list = None, quantile_range: Tuple = None, step: float = None, **base_params):
+    def __init__(self, base_regressor: BaseEstimator, quantiles: list = None, quantile_range: Tuple = None, step: float = None, **base_params):
         """Initializes the QuantileRegressor instance.
         Initializes the quantile regressor by supplying the underlying
         sklearn estimator as well as fixed quantiles or a quantile range
@@ -41,7 +41,7 @@ class QuantileRegressor(BaseEstimator):
         assert {'loss', 'alpha'}.issubset(base_regressor.get_params().keys()), \
                 'Provided base_regressor instance doesn\'t accept quantile loss function.'
 
-        assert fit_quantiles is not None or (quantile_range is not None and step is not None), \
+        assert quantiles is not None or (quantile_range is not None and step is not None), \
                 'The variable fit_quantiles or the variables quantile_range and step must be specified.'
             
         params = {'loss': 'quantile', 
@@ -52,7 +52,7 @@ class QuantileRegressor(BaseEstimator):
         base_regressor.set_params(**params)
     
         self.base_regressor = base_regressor
-        self.fit_quantiles = fit_quantiles
+        self.fit_quantiles = quantiles
         self.quantile_range = quantile_range
         self.step = step
         
@@ -61,8 +61,8 @@ class QuantileRegressor(BaseEstimator):
         model_dict['0.5'] = base_regressor            
         self.model_dict = model_dict
 
-        quantiles = self.__quantile_creator() if fit_quantiles is None and quantile_range is not None and step is not None \
-                                             else fit_quantiles
+        quantiles = self.__quantile_creator() if self.fit_quantiles is None and quantile_range is not None and step is not None \
+                                             else self.fit_quantiles
 
         all_models = [self._create_model_from_quantile(q) for q in quantiles]
         
